@@ -1,0 +1,267 @@
+<div class='flex mt-10'>
+  <div class='flex flex-col gap-5 w-1/6 m-5'>
+    <div class='p-5 h-1/2 shadow-sm border border-gray-100'>
+      <h6 class='mb-4 text-lg font-bold text-zinc-800'>
+        Job Details
+      </h6>
+      <div class='flex flex-row'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='industry'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-4 text-center text-sm w-2/3 border-b-2 border-zinc-300'
+          @type='number'
+          @value={{this.jobProductionCapacity}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='hourglass'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-4 text-center text-sm w-2/3 border-b-2 border-zinc-300'
+          @type='number'
+          width='20px'
+          @value={{this.jobProductionRate}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='timeline'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-4 text-center text-sm w-2/3 border-b-2 border-zinc-300'
+          @type='number'
+          width='20px'
+          @value={{this.jobProductionTime}}
+        />
+      </div>
+    </div>
+    <div class='p-5 shadow-sm border border-gray-100'>
+      <h6 class='mb-4 text-lg text-zinc-800 font-bold'>
+        Truck Details
+      </h6>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='boxes-stacked'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-4 text-center text-sm w-2/3 border-b-2 border-zinc-300'
+          @type='number'
+          @value={{this.trucksCapacity}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='truck-ramp-box'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-4 text-center text-sm w-2/3 border-b-2 border-zinc-300'
+          @type='number'
+          @value={{this.trucksLoadTime}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='stopwatch'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-4 text-center text-sm w-2/3 border-b-2 border-zinc-300'
+          @type='number'
+          @value={{this.trucksDriveTime}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='box-open'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-4 text-center text-sm w-2/3 border-b-2 border-zinc-300'
+          @type='number'
+          @value={{this.trucksUnloadTime}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-red-700'
+          @icon='truck'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-3 text-center text-sm w-2/3 border-b-2 border-red-700'
+          @type='number'
+          @value={{this.trucksBreakdowns}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-red-700'
+          @icon='stopwatch'
+          @prefix='fa'
+          @size='xl'
+        />
+        <Input
+          class='grow mx-3 text-center text-sm w-2/3 border-b-2 border-red-700'
+          @type='number'
+          @value={{this.trucksBreakdownDuration}}
+        />
+      </div>
+      <div class='flex flex-row mt-4'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='arrow-rotate-left'
+          @prefix='fa'
+          @size='xl'
+        />
+        <span class='grow text-center font-bold text-sm'>
+          {{this.trucksCycleTime}} mins
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class='flex flex-col justify-center w-2/3 m-5'>
+    <div class='p-5'>
+      <h3 class='text-xl text-center mt-2 font-bold text-yellow-500'>
+        Target production rate : {{this.jobProductionCapacity}} tons / {{
+          this.jobProductionRate
+        }} hour
+      </h3>
+      <h3 class='text-xl text-center mt-2 font-bold text-yellow-500'>
+        No of trucks required : {{
+          this.calculateTrucksRequired.minRequiredTrucks
+        }}
+      </h3>
+      {{#if (gt this.additionalRequiredTrucks 0)}}
+        <h3 class='text-xl text-center mt-2 font-bold text-yellow-500'>
+          additional trucks required due to breakdowns : {{
+            this.additionalRequiredTrucks
+          }}
+        </h3>
+      {{/if}}
+    </div>
+  </div>
+  <div class='flex flex-col gap-8 mr-5 w-1/5 h-1/3 p-5 border border-zinc-100'>
+    <div class='flex flex-col gap-y-2'>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='industry'
+          @prefix='fa'
+          @size='1x'
+        />
+        Job production capacity
+          (tons)
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='hourglass-end'
+          @prefix='fa'
+          @size='1x'
+        />
+        Job production rate
+          (mins)
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='truck'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks available
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-red-700'
+          @icon='truck'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks breakdowns
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-red-700'
+          @icon='stopwatch'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks breakdown duration (mins)
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='boxes-stacked'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks capacity
+          (tons)
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='truck-ramp-box'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks load time
+          (mins)
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='box-open'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks unload time
+          (mins)
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='stopwatch'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks drive time
+          (mins)
+      </div>
+      <div class='flex-row text-sm text-zinc-500'>
+        <FaIcon
+          class='w-8 text-zinc-700'
+          @icon='arrow-rotate-left'
+          @prefix='fa'
+          @size='1x'
+        />
+        Trucks cycle time
+          (mins)
+      </div>
+    </div>
+  </div>
+</div>
